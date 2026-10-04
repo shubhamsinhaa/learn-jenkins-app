@@ -53,9 +53,8 @@ pipeline {
             steps {
                 sh '''
                     echo "E2E Test Stage"
-                
-                    
-                   node_modules/.bin/serve-index -s build -l 3000 &
+                    npm install serve
+                    node_modules/.bin/serve -s build -l 3000 &
                     sleep 10 
                     npx playwright test
                 '''
@@ -65,7 +64,7 @@ pipeline {
 
     post {
         always {
-            junit 'test-results/junit.xml'
+            junit 'jest-results/junit.xml, playwright-results/junit.xml'
         }
     }
 }
