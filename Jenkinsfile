@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     stages {
+
         stage('Build') {
-           
             agent {
                 docker {
                     image 'node:18-alpine'
@@ -41,9 +41,8 @@ pipeline {
                 '''
             }
         }
-    }
 
-     stage('E2E') {
+        stage('E2E') {
             agent {
                 docker {
                     image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
@@ -53,12 +52,15 @@ pipeline {
 
             steps {
                 sh '''
+                    echo "E2E Test Stage"
+                    npm ci
                     npm install -g serve
-                    serve -s build
+                    serve -s build -l 3000 &
                     npx playwright test
                 '''
             }
         }
+    }
 
     post {
         always {
