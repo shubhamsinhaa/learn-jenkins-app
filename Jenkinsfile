@@ -18,6 +18,7 @@ pipeline {
                     npm ci
                     npm run build
                     ls -la
+                    test -f index.html
                 '''
             }
         }
