@@ -57,6 +57,7 @@ pipeline {
                     node_modules/.bin/serve -s build -l 3000 &
                     sleep 10 
                     npx playwright test
+                    npx playwright test --reporter=html
                 '''
             }
         }
@@ -65,6 +66,7 @@ pipeline {
     post {
         always {
             junit 'jest-results/junit.xml, playwright-results/junit.xml'
+            
         }
     }
 }
