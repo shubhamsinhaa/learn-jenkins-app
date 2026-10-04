@@ -46,22 +46,29 @@ pipeline {
                 }
 
                 stage('Playwright Tests') {
-                    agent {
-                        docker {
-                            image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
-                            reuseNode true
-                        }
-                    }
+    agent {
+        docker {
+            image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+            reuseNode true
+        }
+    }
 
-                    steps {
-                        sh '''
-                            echo "Running Playwright Tests"
-                            npm ci
-                            npx playwright test
-                            npx playwright test --reporter=html
-                        '''
-                    }
-                }
+    steps {
+        sh '''
+            echo "Running Playwright Tests"
+
+            npm ci
+            npm run build
+
+            npx serve -s build -l 3000 &
+            sleep 10
+
+            npx playwright test --reporter=html
+        '''
+    }
+}
+
+                
             }
         }
 
