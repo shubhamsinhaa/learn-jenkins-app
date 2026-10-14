@@ -19,7 +19,7 @@ function App() {
           Application version: {process.env.REACT_APP_VERSION}
       </p>
     </div>
-  );8
+  );
 }
 
 export default App;
