@@ -4,9 +4,16 @@ pipeline {
     environment {
         NETLIFY_SITE_ID = '27cb1f9a-55c4-4470-86b3-534ea80d5260'
         NETLIFY_AUTH_TOKEN = credentials('netlify-token')
+        REACT_APP_VERSION = '1.2.3'
     }
 
     stages {
+
+        stage('Docker') {
+            steps {
+                sh 'docker build -t my-playwright .'
+                
+        }
 
         stage('Build') {
             agent {
@@ -122,13 +129,6 @@ pipeline {
             }
         }
 
-        stage('Approval') {
-            steps {
-                timeout(time: 15, unit: 'MINUTES') {
-                    input message: 'Do you wish to deploy to production?', ok: 'Yes, I am sure!'
-                }
-            }
-        }
 
         stage('Deploy prod') {
             agent {
